@@ -1,4 +1,4 @@
-Структура файла config:
-AppId
-AppSecretKey
-Token
+Структура файла config:<br/>
+AppId<br/>
+AppSecretKey<br/>
+Token<br/>
