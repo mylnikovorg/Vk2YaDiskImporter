@@ -86,7 +86,7 @@ public class VkClient {
         JSONObject out = new JSONObject(httpQuery(callMethod, parameters)); //Class gets only response string
         //Here possible to maintaing response
         if (out.has(susccessAnsw) && out.getJSONArray(susccessAnsw).length() > 0) {
-            return new JSONObject(httpQuery(callMethod, parameters));
+            return new JSONObject(out);
         } else {
             return null;
         }
