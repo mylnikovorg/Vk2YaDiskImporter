@@ -1,2 +1,5 @@
 config
-/.idea/*
+.idea/*
+src/main/resources/config
+target/*
+
