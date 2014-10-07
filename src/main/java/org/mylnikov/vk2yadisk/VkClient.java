@@ -86,7 +86,7 @@ public class VkClient {
         JSONObject out = new JSONObject(httpQuery(callMethod, parameters)); //Class gets only response string
         //Here possible to maintaing response
         if (out.has(susccessAnsw) && out.getJSONArray(susccessAnsw).length() > 0) {
-            return new JSONObject(out);
+            return out;
         } else {
             return null;
         }
@@ -107,6 +107,7 @@ public class VkClient {
         ArrayList<ArrayList<String>> out = new ArrayList<ArrayList<String>>();
         for (int i : in) {
             out.addAll(getAllAttachedDocsToGroup(i));
+            out.addAll(getWallDocsOfGroup(i));
         }
         return out;
 
@@ -117,7 +118,9 @@ public class VkClient {
         ArrayList<ArrayList<String>> out = new ArrayList<ArrayList<String>>();
         for (int i : in) {
             out.addAll(getAllAttachedDocsToGroup(i));
+            out.addAll(getWallDocsOfGroup(i));
         }
+
         return out;
     }
 

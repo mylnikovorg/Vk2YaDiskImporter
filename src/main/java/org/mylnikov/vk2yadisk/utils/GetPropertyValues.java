@@ -33,7 +33,7 @@ public class GetPropertyValues {
         if (inputStream == null) {
             throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
         }
-        System.out.print(prop.getProperty("appid"));
+
 
 
         // get the property value and print it out
@@ -50,9 +50,8 @@ public class GetPropertyValues {
             return this.getPropValues().getProperty("appid");
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            return null;
         }
+        return null;
     }
 
     public String getAppSecretKey() {
@@ -60,9 +59,8 @@ public class GetPropertyValues {
             return this.getPropValues().getProperty("appsecretkey");
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            return null;
         }
+        return null;
     }
 
     public String getToken() {
@@ -70,9 +68,17 @@ public class GetPropertyValues {
             return this.getPropValues().getProperty("token");
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            return null;
         }
+        return null;
+    }
+    public String getProp(String key)
+    {
+        try {
+            return this.getPropValues().getProperty(key);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

@@ -29,8 +29,8 @@ public class HelloController {
 
         VkClient vk = new VkClient(token, appId, appSecretKey);
 
-        model.addAttribute("message", vk.getWallDocsOfGroup(31513532));
-        //model.addAttribute("message", vk.getUserGroups());
+        //model.addAttribute("message", vk.getWallDocsOfGroup(31513532));
+        model.addAttribute("message", vk.getAllDocsInUserGroups());
 
         return "hello";
     }
