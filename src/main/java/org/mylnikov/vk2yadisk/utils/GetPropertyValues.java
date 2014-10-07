@@ -71,7 +71,7 @@ public class GetPropertyValues {
         }
         return null;
     }
-    public String getProp(String key)
+    public String getPropertyByKey(String key)
     {
         try {
             return this.getPropValues().getProperty(key);
