@@ -2,7 +2,6 @@ package org.mylnikov.vk2yadisk;
 
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -12,7 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mylnikov.vk2yadisk.utils.Pair;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,12 +70,6 @@ public class VkClient {
                 sBuffer.append(readLine);
             }
             return sBuffer.toString();
-        } catch (ClientProtocolException e1) {
-            e1.printStackTrace();
-        } catch (UnsupportedEncodingException e1) {
-            e1.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
