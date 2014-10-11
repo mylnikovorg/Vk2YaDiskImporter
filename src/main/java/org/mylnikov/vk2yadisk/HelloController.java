@@ -27,10 +27,10 @@ public class HelloController {
     public String printWelcome(ModelMap model) throws IOException {
 
 
-        VkClient vk = new VkClient(token, appId, appSecretKey);
+        VkClient vk = new VkClient(appId, appSecretKey);
 
         //model.addAttribute("message", vk.getWallDocsOfGroup(31513532));
-        model.addAttribute("message", vk.getAllDocsInUserGroups());
+        model.addAttribute("message", vk.getAllDocsInUserGroups(token));
 
         return "hello";
     }
