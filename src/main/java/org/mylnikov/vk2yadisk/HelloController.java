@@ -45,16 +45,14 @@ public class HelloController {
 
         VkClient vk = new VkClient(appId, appSecretKey);
 
-        //model.addAttribute("message", vk.getWallDocsOfGroup(31513532));
+
         ArrayList<HashMap<String, String>> one = vk.getAllDocsInUserGroups(token);
-        model.addAttribute("message", "done");
-        /*String filename = DigestUtils.md5Hex("mylnikov" + System.currentTimeMillis() + Math.random());
-        vk.getFile(one.get(1).get("url"), filename + "." + one.get(1).get("ext"));
-        System.out.println(diskToken);*/
+
 
         YaDiskImport yaImport = new YaDiskImport(diskUser, diskToken);
         yaImport.UploadFilesToYaDisk(one, appDirectory, tmpDir, 15);
 
+        model.addAttribute("message", "done");
 
         return "hello";
     }
