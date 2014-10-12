@@ -35,6 +35,53 @@ public class VkClient {
         this.appSecretKey = appSecretKey;
     }
 
+    public static void getFile(String fileLink, String fileName) {
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpGet httpget = new HttpGet(fileLink);
+        HttpResponse response = null;
+        try {
+            response = httpclient.execute(httpget);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(response.getStatusLine());
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            InputStream instream = null;
+            try {
+                instream = entity.getContent();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                BufferedInputStream bis = new BufferedInputStream(instream);
+                String filePath = fileName;
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+                int inByte;
+                while ((inByte = bis.read()) != -1) {
+                    bos.write(inByte);
+                }
+                bis.close();
+                bos.close();
+            } catch (IOException ex) {
+                try {
+                    throw ex;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (RuntimeException ex) {
+                httpget.abort();
+                throw ex;
+            } finally {
+                try {
+                    instream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            httpclient.getConnectionManager().shutdown();
+        }
+    }
 
     private String httpQuery(String token, String callMethod, ArrayList<Pair<String, String>> parameters) {
         HttpClient client = new DefaultHttpClient();
@@ -47,7 +94,7 @@ public class VkClient {
 
             for (Pair<String, String> one : parameters) {
                 nameValuePairs.add(new BasicNameValuePair(one.getFirst(), one.getSecond()));
-                //method.setEntity(one.getFirst(), one.getSecond());
+
             }
             method.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -118,7 +165,6 @@ public class VkClient {
         return VkResponseParser.getAllAttachedDocsToGroup(callMethod(token, "docs.get", params));
     }
 
-
     public ArrayList<HashMap<String, String>> getWallDocsOfGroup(String token, String groupId) {
 
         ArrayList<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
@@ -127,54 +173,6 @@ public class VkClient {
         params.add(new Pair<String, String>("count", "15"));
 
         return VkResponseParser.getWallDocsOfGroup(callMethod(token, "wall.get", params));
-    }
-
-    public void getFile(String fileLink, String fileName) {
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet(fileLink);
-        HttpResponse response = null;
-        try {
-            response = httpclient.execute(httpget);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println(response.getStatusLine());
-        HttpEntity entity = response.getEntity();
-        if (entity != null) {
-            InputStream instream = null;
-            try {
-                instream = entity.getContent();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                BufferedInputStream bis = new BufferedInputStream(instream);
-                String filePath = "/tmp/" + fileName;
-                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
-                int inByte;
-                while ((inByte = bis.read()) != -1) {
-                    bos.write(inByte);
-                }
-                bis.close();
-                bos.close();
-            } catch (IOException ex) {
-                try {
-                    throw ex;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (RuntimeException ex) {
-                httpget.abort();
-                throw ex;
-            } finally {
-                try {
-                    instream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            httpclient.getConnectionManager().shutdown();
-        }
     }
 
     public String test() {

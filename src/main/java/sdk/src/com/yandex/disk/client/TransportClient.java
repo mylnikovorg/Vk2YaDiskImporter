@@ -463,6 +463,13 @@ public class TransportClient {
         uploadFile(file, serverDir, file.getName(), makeHash(file, HashType.MD5), null, progressListener);
     }
 
+    public void uploadFile(String localPath, String remoteName, String serverDir, ProgressListener progressListener)
+            throws IOException, UnknownServerWebdavException, PreconditionFailedException,
+            IntermediateFolderNotExistException, WebdavUserNotInitialized, ServerWebdavException, WebdavNotAuthorizedException {
+        File file = new File(localPath);
+        uploadFile(file, serverDir, remoteName, makeHash(file, HashType.MD5), null, progressListener);
+    }
+
     /**
      * Upload file
      *
