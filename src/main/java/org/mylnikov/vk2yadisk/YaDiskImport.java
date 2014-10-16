@@ -4,10 +4,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import sdk.src.com.yandex.disk.client.Credentials;
 import sdk.src.com.yandex.disk.client.ProgressListener;
 import sdk.src.com.yandex.disk.client.TransportClient;
-import sdk.src.com.yandex.disk.client.exceptions.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.AbstractList;
 import java.util.HashMap;
 
@@ -28,25 +26,7 @@ public class YaDiskImport {
         try {
             diskClient = TransportClient.getInstance(new Credentials(user, token));
             diskClient.makeFolder(directoryYaDisk + "/" + directoryAction);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (DuplicateFolderException e) {
-            e.printStackTrace();
-        } catch (IntermediateFolderNotExistException e) {
-            e.printStackTrace();
-        } catch (WebdavUserNotInitialized webdavUserNotInitialized) {
-            webdavUserNotInitialized.printStackTrace();
-        } catch (PreconditionFailedException e) {
-            e.printStackTrace();
-        } catch (WebdavNotAuthorizedException e) {
-            e.printStackTrace();
-        } catch (ServerWebdavException e) {
-            e.printStackTrace();
-        } catch (UnsupportedMediaTypeException e) {
-            e.printStackTrace();
-        } catch (UnknownServerWebdavException e) {
-            e.printStackTrace();
-        } catch (WebdavClientInitException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         int i = 0;
@@ -79,21 +59,7 @@ public class YaDiskImport {
             diskClient.uploadFile(tmpDirectory + "/" + filename, file.get("title") + "." + file.get("ext"), directoryOnYaDisk, pl);
             //System.out.print();
 
-        } catch (WebdavClientInitException e) {
-            e.printStackTrace();
-        } catch (ServerWebdavException e) {
-            e.printStackTrace();
-        } catch (UnknownServerWebdavException e) {
-            e.printStackTrace();
-        } catch (PreconditionFailedException e) {
-            e.printStackTrace();
-        } catch (IntermediateFolderNotExistException e) {
-            e.printStackTrace();
-        } catch (WebdavUserNotInitialized webdavUserNotInitialized) {
-            webdavUserNotInitialized.printStackTrace();
-        } catch (WebdavNotAuthorizedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         File tmp = new File(tmpDirectory + "/" + filename);

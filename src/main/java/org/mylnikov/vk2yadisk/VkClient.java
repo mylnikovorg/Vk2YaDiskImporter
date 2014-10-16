@@ -21,7 +21,6 @@ import java.util.List;
 /**
  * Created by root on 9/29/14.
  */
-
 public class VkClient {
     private final String susccessAnswer = "response";
 
@@ -63,21 +62,9 @@ public class VkClient {
                 }
                 bis.close();
                 bos.close();
-            } catch (IOException ex) {
-                try {
-                    throw ex;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (RuntimeException ex) {
-                httpget.abort();
-                throw ex;
-            } finally {
-                try {
-                    instream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
+
             }
             httpclient.getConnectionManager().shutdown();
         }
