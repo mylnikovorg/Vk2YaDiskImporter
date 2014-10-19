@@ -162,8 +162,89 @@ public class VkClient {
         return VkResponseParser.getWallDocsOfGroup(callMethod(token, "wall.get", params));
     }
 
-    public String test() {
-        return "Test String";
+    public HashMap<String, String> getTokenByCode(String code, String url) {
+
+        HashMap<String, String> one = new HashMap<String, String>();
+        ArrayList<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
+        HttpClient client = new DefaultHttpClient();
+        client.getParams().setParameter("Content-type", "application/x-www-form-urlencoded");
+        BufferedReader br = null;
+
+        HttpPost method = new HttpPost("https://oauth.vk.com/access_token?client_id=" + appId + "&client_secret=" + appSecretKey + "&code=" + code + "&redirect_uri=" + url + "&");
+        try {
+            List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>(1);
+
+            method.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+
+            HttpResponse response = client.execute(method);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new Exception("JSON Response Failed");
+            }
+
+            StringBuilder sBuffer = new StringBuilder();
+
+            br = new BufferedReader(new InputStreamReader((InputStream) response.getEntity().getContent()));
+            String readLine;
+
+            while (((readLine = br.readLine()) != null)) {
+                sBuffer.append(readLine);
+            }
+            JSONObject out = new JSONObject((sBuffer.toString()));
+            if (!out.has("error")) {
+                one.put("token", out.get("access_token").toString());
+                one.put("expires", out.get("expires_in").toString());
+            }
+            return one;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return one;
+    }
+
+    public HashMap<String, String> getTokenByYandexCode(String code, String yandexAppId, String yandexAppSecret) {
+
+        HashMap<String, String> one = new HashMap<String, String>();
+        ArrayList<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
+        HttpClient client = new DefaultHttpClient();
+        client.getParams().setParameter("Content-type", "application/x-www-form-urlencoded");
+        BufferedReader br = null;
+        HttpPost method = new HttpPost("https://oauth.yandex.ru/token?grant_type=authorization_code&client_id=" + yandexAppId + "&client_secret=" + yandexAppSecret + "&code=" + code);
+        try {
+            List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("grant_type", "authorization_code"));
+            nameValuePairs.add(new BasicNameValuePair("code", code));
+            nameValuePairs.add(new BasicNameValuePair("client_id", yandexAppId));
+            nameValuePairs.add(new BasicNameValuePair("client_secret", yandexAppSecret));
+
+            method.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+
+            HttpResponse response = client.execute(method);
+
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new Exception("JSON Response Failed");
+            }
+
+            StringBuilder sBuffer = new StringBuilder();
+
+            br = new BufferedReader(new InputStreamReader((InputStream) response.getEntity().getContent()));
+            String readLine;
+
+            while (((readLine = br.readLine()) != null)) {
+                sBuffer.append(readLine);
+            }
+            JSONObject out = new JSONObject((sBuffer.toString()));
+            if (!out.has("error")) {
+                one.put("token", out.get("access_token").toString());
+                one.put("expires", out.get("expires_in").toString());
+            }
+            return one;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return one;
     }
 
 }

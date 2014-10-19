@@ -25,6 +25,7 @@ public class YaDiskImport {
         TransportClient diskClient = null;
         try {
             diskClient = TransportClient.getInstance(new Credentials(user, token));
+            diskClient.makeFolder(directoryYaDisk);
             diskClient.makeFolder(directoryYaDisk + "/" + directoryAction);
         } catch (Exception e) {
             e.printStackTrace();

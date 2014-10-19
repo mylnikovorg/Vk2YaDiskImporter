@@ -691,7 +691,9 @@ public class TransportClient {
                     Log.d(TAG, "Folder created successfully");
                     return;
                 case 405:
-                    throw new DuplicateFolderException("Folder '" + dir + "' already exists");
+                    //throw new DuplicateFolderException("Folder '" + dir + "' already exists");
+                    Log.d(TAG, "Folder created successfully");
+                    return;
                 case 409:
                     throw new IntermediateFolderNotExistException("Parent folder not exists for '" + dir + "'");
                 case 415:

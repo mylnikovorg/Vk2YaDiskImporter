@@ -13,4 +13,8 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <bean class="org.mylnikov.vk2yadisk.VkClient">
+        <constructor-arg type="java.lang.String" value="${appid}"/>
+        <constructor-arg type="java.lang.String" value="${appsecretkey}"/>
+    </bean>
 </beans>
