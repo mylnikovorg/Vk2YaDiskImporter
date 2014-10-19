@@ -49,6 +49,32 @@ public class Vk2YaDiskImporter {
 
     /*@Value("${token}")
     private String token;*/
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String Index(ModelMap model, @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
+                               @CookieValue(value = "ya_token", defaultValue = "") String yaToken) throws IOException {
+        if (yaToken.equals("") || vkToken.equals("")) {
+            model.addAttribute("message", "You have to visit " + host + "/cookies");
+            return "hello";
+        }
+
+        ArrayList<HashMap<String, String>> groups = vkClient.getUserGroupsWithName(vkToken);
+        System.out.println(groups);
+        for(HashMap<String,String> group : groups)
+        {
+
+            YaDiskImport yaImport = new YaDiskImport(diskUser, yaToken);
+            yaImport.UploadFilesToYaDisk(vkClient.getAllDocsInUserGroup(vkToken,group.get("gid")),
+                    appDirectory, group.get("name"), tmpDir, 6);
+        }
+
+
+
+        model.addAttribute("message", "smth");
+
+        return "hello";
+    }
+
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public String printWelcome(ModelMap model, @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
                                @CookieValue(value = "ya_token", defaultValue = "") String yaToken) throws IOException {
@@ -73,21 +99,8 @@ public class Vk2YaDiskImporter {
     public ModelAndView Cookies(@CookieValue(value = "vk_token", defaultValue = "") String vkToken,
                                 @CookieValue(value = "ya_token", defaultValue = "") String yaToken,
 
-                                HttpServletResponse response, HttpServletRequest request,
-                                @RequestParam(value = "vktoken", required = false) String vkRespose,
-                                @RequestParam(value = "yatoken", required = false) String yaRespose) throws IOException {
+                                HttpServletResponse response, HttpServletRequest request) throws IOException {
 
-
-        if (vkRespose != null) {
-            if (vkRespose != "") {
-                vkToken = vkRespose;
-            }
-        }
-        if (yaRespose != null) {
-            if (yaRespose != "") {
-                yaToken = yaRespose;
-            }
-        }
         if (vkToken.equals("")) {
             String redirectCode = "https://oauth.vk.com/authorize?client_id=" + appId + "&scope=photos,wall,video,groups,docs,offline&response_type=code&redirect_uri=" + host + "/cookiesvk";
             return new ModelAndView("redirect:" + redirectCode);
@@ -96,13 +109,13 @@ public class Vk2YaDiskImporter {
         if (yaToken.equals("")) {
 
             String redirectYandex = "https://oauth.yandex.ru/authorize?response_type=code&client_id=" + yandexAppId;
-            //System.out.println(redirectYandex);
+
             return new ModelAndView("redirect:" + redirectYandex);
         }
-        Cookie cookie = new Cookie("vk_token", vkToken);
+        /*Cookie cookie = new Cookie("vk_token", vkToken);
         response.addCookie(cookie);
         cookie = new Cookie("ya_token", yaToken);
-        response.addCookie(cookie);
+        response.addCookie(cookie);*/
 
         System.out.println(vkToken + " <-> " + yaToken);
 

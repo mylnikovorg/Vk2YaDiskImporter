@@ -77,4 +77,20 @@ public class VkResponseParser {
     }
 
 
+    public static ArrayList<HashMap<String, String>> getUserGroupsWithName(JSONObject obj) {
+        ArrayList<HashMap<String, String>> out = new ArrayList<HashMap<String, String>>();
+        if (obj != null) {
+            for (int i = 1; i <= Integer.valueOf(obj.getJSONArray(susccessAnswer).length()) - 1; i++) {
+                JSONObject tmp = (JSONObject) ((JSONObject) obj.getJSONArray(susccessAnswer).get(i));
+
+                HashMap<String, String> documentArray = new HashMap<String, String>();
+                documentArray.put("gid", tmp.get("gid").toString());
+                documentArray.put("name", tmp.get("name").toString());
+
+                out.add(documentArray);
+
+            }
+        }
+        return out;
+    }
 }

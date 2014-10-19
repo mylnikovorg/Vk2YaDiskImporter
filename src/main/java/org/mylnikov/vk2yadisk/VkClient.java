@@ -100,6 +100,8 @@ public class VkClient {
             while (((readLine = br.readLine()) != null)) {
                 sBuffer.append(readLine);
             }
+            System.out.println(sBuffer.toString());
+            Thread.sleep(500);
             return sBuffer.toString();
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,6 +124,10 @@ public class VkClient {
         return VkResponseParser.getUserGroups(callMethod(token, "getGroups", new ArrayList<Pair<String, String>>()));
     }
 
+    public ArrayList<HashMap<String, String>> getUserGroupsWithName(String token) {
+        return VkResponseParser.getUserGroupsWithName(callMethod(token, "getGroupsFull", new ArrayList<Pair<String, String>>()));
+    }
+
     public ArrayList<HashMap<String, String>> getAllDocsInUserGroups(String token, ArrayList<String> in) {
         ArrayList<HashMap<String, String>> out = new ArrayList<HashMap<String, String>>();
 
@@ -139,6 +145,14 @@ public class VkClient {
             out.addAll(getAllAttachedDocsToGroup(token, i));
             out.addAll(getWallDocsOfGroup(token, i));
         }
+
+        return out;
+    }
+    public ArrayList<HashMap<String, String>> getAllDocsInUserGroup(String token, String gid) {
+
+        ArrayList<HashMap<String, String>> out = new ArrayList<HashMap<String, String>>();
+        out.addAll(getAllAttachedDocsToGroup(token, gid));
+        out.addAll(getWallDocsOfGroup(token, gid));
 
         return out;
     }

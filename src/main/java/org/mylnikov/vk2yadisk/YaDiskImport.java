@@ -7,7 +7,9 @@ import sdk.src.com.yandex.disk.client.TransportClient;
 
 import java.io.File;
 import java.util.AbstractList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by root on 10/12/14.
@@ -36,6 +38,31 @@ public class YaDiskImport {
                 break;
             this.uploadFileToYaDisk(one, directoryYaDisk + "/" + directoryAction + "/", tmpDir);
             i++;
+        }
+
+    }
+
+    public void UploadFilesToYaDisk(AbstractList<HashMap<String, String>> files, String directoryYaDisk, String groupName, String tmpDir, int fileAmountLimit) {
+        //String directoryAction = DigestUtils.md5Hex("mylnikov" + System.currentTimeMillis() + Math.random());
+        System.out.println(files);
+        if (files.size() > 0) {
+            Collections.shuffle(files, new Random(System.nanoTime()));
+            String directoryAction = groupName;
+            TransportClient diskClient = null;
+            try {
+                diskClient = TransportClient.getInstance(new Credentials(user, token));
+                diskClient.makeFolder(directoryYaDisk);
+                diskClient.makeFolder(directoryYaDisk + "/" + directoryAction);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            int i = 0;
+            for (HashMap<String, String> one : files) {
+                if (i >= fileAmountLimit)
+                    break;
+                this.uploadFileToYaDisk(one, directoryYaDisk + "/" + directoryAction + "/", tmpDir);
+                i++;
+            }
         }
 
     }
