@@ -101,7 +101,7 @@ public class VkClient {
                 sBuffer.append(readLine);
             }
             System.out.println(sBuffer.toString());
-            Thread.sleep(500);
+            Thread.sleep(350);
             return sBuffer.toString();
         } catch (Exception e) {
             e.printStackTrace();
