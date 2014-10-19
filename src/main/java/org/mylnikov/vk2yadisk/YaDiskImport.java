@@ -44,7 +44,7 @@ public class YaDiskImport {
 
     public void UploadFilesToYaDisk(AbstractList<HashMap<String, String>> files, String directoryYaDisk, String groupName, String tmpDir, int fileAmountLimit) {
         //String directoryAction = DigestUtils.md5Hex("mylnikov" + System.currentTimeMillis() + Math.random());
-        System.out.println(files);
+
         if (files.size() > 0) {
             Collections.shuffle(files, new Random(System.nanoTime()));
             String directoryAction = groupName;
@@ -58,9 +58,10 @@ public class YaDiskImport {
             }
             int i = 0;
             for (HashMap<String, String> one : files) {
-                if (i >= fileAmountLimit)
+                if (i >= fileAmountLimit )
                     break;
-                this.uploadFileToYaDisk(one, directoryYaDisk + "/" + directoryAction + "/", tmpDir);
+                if(Integer.parseInt(one.get("size")) <= 5242880)
+                    this.uploadFileToYaDisk(one, directoryYaDisk + "/" + directoryAction + "/", tmpDir);
                 i++;
             }
         }
