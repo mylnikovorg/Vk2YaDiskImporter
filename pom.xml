@@ -8,7 +8,7 @@
     <name>Vk2DiskImporter</name>
 
     <properties>
-        <spring.version>3.2.0.RELEASE</spring.version>
+        <spring.version>4.1.1.RELEASE</spring.version>
     </properties>
 
     <dependencies>
