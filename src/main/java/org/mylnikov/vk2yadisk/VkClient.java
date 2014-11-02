@@ -127,6 +127,14 @@ public class VkClient {
     public ArrayList<HashMap<String, String>> getUserGroupsWithName(String token) {
         return VkResponseParser.getUserGroupsWithName(callMethod(token, "getGroupsFull", new ArrayList<Pair<String, String>>()));
     }
+    public HashMap<String, String> getUserGroupsWithNameHashMap(String token) {
+        HashMap<String, String> outMap=new HashMap<>();
+        ArrayList<HashMap<String, String>> result = VkResponseParser.getUserGroupsWithName(callMethod(token, "getGroupsFull", new ArrayList<Pair<String, String>>()));
+        for (HashMap<String, String> stringStringHashMap : result) {
+            outMap.put(stringStringHashMap.get("gid"), stringStringHashMap.get("name"));
+        }
+        return outMap;
+    }
 
     public ArrayList<HashMap<String, String>> getAllDocsInUserGroups(String token, ArrayList<String> in) {
         ArrayList<HashMap<String, String>> out = new ArrayList<HashMap<String, String>>();
@@ -262,5 +270,4 @@ public class VkClient {
     }
 
 }
-
 
