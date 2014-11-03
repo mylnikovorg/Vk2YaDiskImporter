@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html id="nb-1" data-nb="nb-0">
     <head>
@@ -756,62 +757,10 @@
                                                         </div>
                                                     </form>
                                                 </div>
-                                                <div class="nb-select-radio__group">
-                                                    <form action="https://disk.yandex.ru/client/disk/%D0%A1%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%81%D0%B5%D1%82%D0%B8%7Cimport-social#"
-                                                          method="get">
-                                                        <div class="nb-select-radio__item"><label data-nb="checkbox"
-                                                                                                  for="nb-checkbox_95"
-                                                                                                  class=" nb-checkbox _nb-small-radio-checkbox _init"
-                                                                                                  id="nb-222"><input
-                                                                class="_nb-checkbox-input" id="nb-checkbox_95"
-                                                                type="radio" name="order" checked="checked"
-                                                                value="1"><span
-                                                                class="_nb-checkbox-flag _nb-checkbox-radio-flag"><span
-                                                                class="_nb-checkbox-flag-icon"></span></span><span
-                                                                class="_nb-checkbox-label">По возрастанию</span></label>
-                                                        </div>
-                                                        <div class="nb-select-radio__item"><label data-nb="checkbox"
-                                                                                                  for="nb-checkbox_96"
-                                                                                                  class=" nb-checkbox _nb-small-radio-checkbox _init"
-                                                                                                  id="nb-223"><input
-                                                                class="_nb-checkbox-input" id="nb-checkbox_96"
-                                                                type="radio" name="order" tabindex="-1" value="0"><span
-                                                                class="_nb-checkbox-flag _nb-checkbox-radio-flag"><span
-                                                                class="_nb-checkbox-flag-icon"></span></span><span
-                                                                class="_nb-checkbox-label">По убыванию</span></label>
-                                                        </div>
-                                                    </form>
-                                                </div>
+
                                             </div>
                                         </div>
-                                        <div class=" nb-radio-button _nb-small-radio-button nb-group js-select-view b-toolset__button">
-                                            <span class="_nb-radio-button-button nb-complex-group-item"><input
-                                                    class="_nb-radio-button-radio" type="radio"
-                                                    name="view=toolset&amp;id=/disk/Социальные сети&amp;idContext=/disk/Социальные сети&amp;display=normal"
-                                                    value="tile" id="nb-radio-button_97"><label
-                                                    class=" nb-button _nb-small-button _nb-with-only-button nb-complex-group-item-subject js-button"
-                                                    for="nb-radio-button_97" data-value="tile"><span
-                                                    class="_nb-button-content"><img
-                                                    src="./Яндекс.Диск_files/La6qi18Z8LwgnZdsAr1qy1GwCwo(1).gif"
-                                                    class="nb-icon nb-s-view-tiles-icon"></span></label></span><span
-                                                class="_nb-radio-button-button nb-complex-group-item"><input
-                                                class="_nb-radio-button-radio" type="radio"
-                                                name="view=toolset&amp;id=/disk/Социальные сети&amp;idContext=/disk/Социальные сети&amp;display=normal"
-                                                value="icons" id="nb-radio-button_98" checked="checked"><label
-                                                class=" nb-button _nb-small-button _nb-with-only-button nb-complex-group-item-subject js-button"
-                                                for="nb-radio-button_98" data-value="icons"><span
-                                                class="_nb-button-content"><img
-                                                src="./Яндекс.Диск_files/La6qi18Z8LwgnZdsAr1qy1GwCwo(1).gif"
-                                                class="nb-icon nb-s-view-icons-icon"></span></label></span><span
-                                                class="_nb-radio-button-button nb-complex-group-item"><input
-                                                class="_nb-radio-button-radio" type="radio"
-                                                name="view=toolset&amp;id=/disk/Социальные сети&amp;idContext=/disk/Социальные сети&amp;display=normal"
-                                                value="list" id="nb-radio-button_99"><label
-                                                class=" nb-button _nb-small-button _nb-with-only-button nb-complex-group-item-subject js-button"
-                                                for="nb-radio-button_99" data-value="list"><span
-                                                class="_nb-button-content"><img
-                                                src="./Яндекс.Диск_files/La6qi18Z8LwgnZdsAr1qy1GwCwo(1).gif"
-                                                class="nb-icon nb-s-view-list-icon"></span></label></span></div>
+
                                     </div>
                                 </div>
                             </div>
@@ -880,19 +829,10 @@
                                 <div class="b-import-social__subtitle">Сохраните файлы из групп ВКонтакте.
                                 </div>
                                 <form:form method="POST" commandName="groupsnamessubmit" action="submit" name="importform">
-                                    <table align="center">
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                <ul>
-                                                    <form:checkboxes element="li" items="${groupnames}" path="groups"/>
-                                                </ul>
 
-                                            </td>
-                                        </tr>
+                                           <form:checkboxes element="li" items="${groupnames}" path="groups"/>
 
-                                        </tbody>
-                                    </table>
+                                   
 
                                 <div class="b-import-social__buttons">
                                     <div onClick="document.forms['importform'].submit();" class="b-import-social__button b-import-social__button_vkontakte js-import-social-button"

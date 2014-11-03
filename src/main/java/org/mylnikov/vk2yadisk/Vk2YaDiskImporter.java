@@ -88,7 +88,7 @@ public class Vk2YaDiskImporter {
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
     public String initForm(Model model, @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
                            @CookieValue(value = "ya_token", defaultValue = "") String yaToken) {
-        if (yaToken.equals("") || vkToken.equals("")) {
+        /*if (yaToken.equals("") || vkToken.equals("")) {
             model.addAttribute("link", host + "/cookies");
             return "redirect";
         }
@@ -106,7 +106,9 @@ public class Vk2YaDiskImporter {
 
         model.addAttribute("groupsnamessubmit", new Groups());
         model.addAttribute("groupnames", groupsForShow);
-        return "form";
+        return "form";*/
+        model.addAttribute("link", host + "/");
+        return "redirect";
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
