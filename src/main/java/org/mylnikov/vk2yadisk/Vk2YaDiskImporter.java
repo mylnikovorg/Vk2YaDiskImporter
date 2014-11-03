@@ -121,7 +121,7 @@ public class Vk2YaDiskImporter {
         }
 
         //System.out.println(groups.getGroups());
-        if(groups==null || groups.getGroups().size()<=0)
+        if(groups==null || groups.getGroups()==null || groups.getGroups().size()<=0)
         {
             model.addAttribute("link", host + "/");
             return "redirect";
