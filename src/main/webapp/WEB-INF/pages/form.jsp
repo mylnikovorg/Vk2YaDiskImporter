@@ -12,9 +12,8 @@
         <tr>
             <td>
                 <ul>
-
-                <form:checkboxes element="li"  items="${groupnames}" path="groups" />
-                    </ul>
+                    <form:checkboxes element="li" items="${groupnames}" path="groups"/>
+                </ul>
 
             </td>
         </tr>

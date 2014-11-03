@@ -54,10 +54,23 @@ public class Vk2YaDiskImporter {
     public String Index(ModelMap model, @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
                         @CookieValue(value = "ya_token", defaultValue = "") String yaToken) throws IOException {
         if (yaToken.equals("") || vkToken.equals("")) {
-            model.addAttribute("message", "You have to visit " + host + "/cookies");
-            return "hello";
+            model.addAttribute("link", host + "/cookies");
+            return "redirect";
         }
+        ArrayList<HashMap<String, String>> groups = vkClient.getUserGroupsWithName(vkToken);
 
+
+        Map groupsForShow = new HashMap();
+        for (HashMap<String, String> group : groups) {
+            groupsForShow.put(group.get("gid"), group.get("name"));//Charset.forName("UTF-8").encode(group.get("name")).toString());
+        }
+        System.out.println(groupsForShow);
+
+
+        model.addAttribute("groupsnamessubmit", new Groups());
+        model.addAttribute("groupnames", groupsForShow);
+
+        return "main";
         /*ArrayList<HashMap<String, String>> groups = vkClient.getUserGroupsWithName(vkToken);
         System.out.println(groups);
         for(HashMap<String,String> group : groups)
@@ -68,26 +81,22 @@ public class Vk2YaDiskImporter {
                     appDirectory, group.get("name"), tmpDir, 6);
         }
 */
-        model.addAttribute("message", "smth");
-        return "hello";
+        /*model.addAttribute("message", "smth");
+        return "hello";*/
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
     public String initForm(Model model, @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
                            @CookieValue(value = "ya_token", defaultValue = "") String yaToken) {
-
+        if (yaToken.equals("") || vkToken.equals("")) {
+            model.addAttribute("link", host + "/cookies");
+            return "redirect";
+        }
 
 
         ArrayList<HashMap<String, String>> groups = vkClient.getUserGroupsWithName(vkToken);
-        System.out.println(groups);
-            /*for(HashMap<String,String> group : groups)
-            {
 
-                YaDiskImport yaImport = new YaDiskImport(diskUser, yaToken);
-                yaImport.UploadFilesToYaDisk(vkClient.getAllDocsInUserGroup(vkToken,group.get("gid")),
-                        appDirectory, group.get("name"), tmpDir, 6);
-            }*/
-        //List<String> groupsNames= groups.stream().map(group -> group.get("name")).collect(Collectors.toList());
+
         Map groupsForShow = new HashMap();
         for (HashMap<String, String> group : groups) {
             groupsForShow.put(group.get("gid"), group.get("name"));//Charset.forName("UTF-8").encode(group.get("name")).toString());
@@ -105,7 +114,18 @@ public class Vk2YaDiskImporter {
                              @ModelAttribute Groups groups,
                              @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
                              @CookieValue(value = "ya_token", defaultValue = "") String yaToken) {
-        System.out.println(groups.getGroups());
+
+        if (yaToken.equals("") || vkToken.equals("")) {
+            model.addAttribute("link", host + "/cookies");
+            return "redirect";
+        }
+
+        //System.out.println(groups.getGroups());
+        if(groups==null || groups.getGroups().size()<=0)
+        {
+            model.addAttribute("link", host + "/");
+            return "redirect";
+        }
         HashMap<String, String> groupsIndex = vkClient.getUserGroupsWithNameHashMap(vkToken);
         for (Object o : groups.getGroups()) {
             String inString = (String)o;
@@ -128,8 +148,8 @@ public class Vk2YaDiskImporter {
     public String printWelcome(ModelMap model, @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
                                @CookieValue(value = "ya_token", defaultValue = "") String yaToken) throws IOException {
         if (yaToken.equals("") || vkToken.equals("")) {
-            model.addAttribute("message", "You have to visit " + host + "/cookies");
-            return "hello";
+            model.addAttribute("link", host + "/cookies");
+            return "redirect";
         }
 
         ArrayList<HashMap<String, String>> one = vkClient.getAllDocsInUserGroups(vkToken);
