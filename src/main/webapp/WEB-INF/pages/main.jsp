@@ -715,46 +715,7 @@
                                                     <div class="nb-select-radio__title">Упорядочить</div>
                                                     <form action="https://disk.yandex.ru/client/disk/%D0%A1%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5%20%D1%81%D0%B5%D1%82%D0%B8%7Cimport-social#"
                                                           method="get">
-                                                        <div class="nb-select-radio__item"><label data-nb="checkbox"
-                                                                                                  for="nb-checkbox_91"
-                                                                                                  class=" nb-checkbox _nb-small-radio-checkbox _init"
-                                                                                                  id="nb-218"><input
-                                                                class="_nb-checkbox-input" id="nb-checkbox_91"
-                                                                type="radio" name="sort" checked="checked" value="name"><span
-                                                                class="_nb-checkbox-flag _nb-checkbox-radio-flag"><span
-                                                                class="_nb-checkbox-flag-icon"></span></span><span
-                                                                class="_nb-checkbox-label">Имя</span></label></div>
-                                                        <div class="nb-select-radio__item"><label data-nb="checkbox"
-                                                                                                  for="nb-checkbox_92"
-                                                                                                  class=" nb-checkbox _nb-small-radio-checkbox _init"
-                                                                                                  id="nb-219"><input
-                                                                class="_nb-checkbox-input" id="nb-checkbox_92"
-                                                                type="radio" name="sort" tabindex="-1"
-                                                                value="size"><span
-                                                                class="_nb-checkbox-flag _nb-checkbox-radio-flag"><span
-                                                                class="_nb-checkbox-flag-icon"></span></span><span
-                                                                class="_nb-checkbox-label">Размер</span></label></div>
-                                                        <div class="nb-select-radio__item"><label data-nb="checkbox"
-                                                                                                  for="nb-checkbox_93"
-                                                                                                  class=" nb-checkbox _nb-small-radio-checkbox _init"
-                                                                                                  id="nb-220"><input
-                                                                class="_nb-checkbox-input" id="nb-checkbox_93"
-                                                                type="radio" name="sort" tabindex="-1"
-                                                                value="type"><span
-                                                                class="_nb-checkbox-flag _nb-checkbox-radio-flag"><span
-                                                                class="_nb-checkbox-flag-icon"></span></span><span
-                                                                class="_nb-checkbox-label">Тип</span></label></div>
-                                                        <div class="nb-select-radio__item"><label data-nb="checkbox"
-                                                                                                  for="nb-checkbox_94"
-                                                                                                  class=" nb-checkbox _nb-small-radio-checkbox _init"
-                                                                                                  id="nb-221"><input
-                                                                class="_nb-checkbox-input" id="nb-checkbox_94"
-                                                                type="radio" name="sort" tabindex="-1"
-                                                                value="mtime"><span
-                                                                class="_nb-checkbox-flag _nb-checkbox-radio-flag"><span
-                                                                class="_nb-checkbox-flag-icon"></span></span><span
-                                                                class="_nb-checkbox-label">Дата изменения</span></label>
-                                                        </div>
+
                                                     </form>
                                                 </div>
 
