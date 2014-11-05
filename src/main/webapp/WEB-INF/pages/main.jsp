@@ -839,7 +839,7 @@
                                          data-service="vkontakte" data-metrika-click="count"
                                          data-metrika-params="interface elements,import page,start import,vkontakte">
                                         <div class="b-import-social__icon-button"><img
-                                                src="https://yandex.st/lego/_/La6qi18Z8LwgnZdsAr1qy1GwCwo.gif"
+                                                src="https://yandex.st/lego/`_/La6qi18Z8LwgnZdsAr1qy1GwCwo.gif"
                                                 class="nb-icon nb-s-symbol-vkontakte-icon b-import-social__icon nb-icon_symbol-vkontakte">
                                         </div>
                                         Загрузить файлы из групп
