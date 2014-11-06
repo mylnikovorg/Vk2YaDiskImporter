@@ -22,7 +22,10 @@ public class YaDiskImport {
         this.token = token;
     }
 
-    public void UploadFilesToYaDisk(AbstractList<HashMap<String, String>> files, String directoryYaDisk, String tmpDir, int fileAmountLimit) {
+    public void UploadFilesToYaDisk(AbstractList<HashMap<String, String>> files,
+                                    String directoryYaDisk,
+                                    String tmpDir,
+                                    int fileAmountLimit) {
         String directoryAction = DigestUtils.md5Hex("mylnikov" + System.currentTimeMillis() + Math.random());
         TransportClient diskClient = null;
         try {
@@ -42,9 +45,14 @@ public class YaDiskImport {
 
     }
 
-    public void UploadFilesToYaDisk(AbstractList<HashMap<String, String>> files, String directoryYaDisk, String groupName, String tmpDir, int fileAmountLimit) {
-        //String directoryAction = DigestUtils.md5Hex("mylnikov" + System.currentTimeMillis() + Math.random());
+    public int UploadFilesToYaDisk(AbstractList<HashMap<String, String>> files,
+                                    String directoryYaDisk,
+                                    String groupName,
+                                    String tmpDir,
+                                    int fileAmountLimit) {
 
+        int fileCount=0;
+        final int sizeLimit = 5242880; //Max file size for import
         if (files.size() > 0) {
             Collections.shuffle(files, new Random(System.nanoTime()));
             String directoryAction = groupName;
@@ -60,15 +68,20 @@ public class YaDiskImport {
             for (HashMap<String, String> one : files) {
                 if (i >= fileAmountLimit )
                     break;
-                if(Integer.parseInt(one.get("size")) <= 5242880)
+                if(Integer.parseInt(one.get("size")) <= sizeLimit) {
                     this.uploadFileToYaDisk(one, directoryYaDisk + "/" + directoryAction + "/", tmpDir);
+                    fileCount++;
+                }
                 i++;
             }
         }
+        return fileCount;
 
     }
 
-    private void uploadFileToYaDisk(HashMap<String, String> file, String directoryOnYaDisk, String tmpDirectory) {
+    private void uploadFileToYaDisk(HashMap<String, String> file,
+                                    String directoryOnYaDisk,
+                                    String tmpDirectory) {
         ProgressListener pl = new ProgressListener() {
             @Override
             public void updateProgress(long loaded, long total) {

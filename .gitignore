@@ -1,6 +1,7 @@
 config
 .idea/*
 src/main/resources/config
+src/main/resources/config1
 target/*
 *.class
 *.iml

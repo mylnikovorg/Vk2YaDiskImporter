@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
-public class Vk2YaDiskImporter {
+public class Vk2YaDiskController {
 
     @Value("${appid}")
     private String appId;
@@ -50,6 +50,8 @@ public class Vk2YaDiskImporter {
     @Autowired
     private VkClient vkClient;
 
+    private final int fileLimitForOneGroup=6;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String Index(ModelMap model, @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
                         @CookieValue(value = "ya_token", defaultValue = "") String yaToken) throws IOException {
@@ -57,14 +59,20 @@ public class Vk2YaDiskImporter {
             model.addAttribute("link", host + "/cookies");
             return "redirect";
         }
-        ArrayList<HashMap<String, String>> groups = vkClient.getUserGroupsWithName(vkToken);
+        ArrayList<HashMap<String, String>> groups = vkClient.getUserGroupsWithNameAndDocsCounts(vkToken);
 
 
         Map groupsForShow = new HashMap();
         for (HashMap<String, String> group : groups) {
-            groupsForShow.put(group.get("gid"), group.get("name"));//Charset.forName("UTF-8").encode(group.get("name")).toString());
+            if(Integer.parseInt(group.get("docs"))+Integer.parseInt(group.get("walldocs"))>0)
+                groupsForShow.put(group.get("gid"),
+                        group.get("name")+" ["+group.get("docs")+"] ["+group.get("walldocs")+"]");//Charset.forName("UTF-8").encode(group.get("name")).toString());
         }
-        System.out.println(groupsForShow);
+        /*for (HashMap<String, String> group : groups) {
+
+                groupsForShow.put(group.get("gid"), group.get("name"));//Charset.forName("UTF-8").encode(group.get("name")).toString());
+        }
+        System.out.println(groupsForShow);*/
 
 
         model.addAttribute("groupsnamessubmit", new Groups());
@@ -88,25 +96,6 @@ public class Vk2YaDiskImporter {
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
     public String initForm(Model model, @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
                            @CookieValue(value = "ya_token", defaultValue = "") String yaToken) {
-        /*if (yaToken.equals("") || vkToken.equals("")) {
-            model.addAttribute("link", host + "/cookies");
-            return "redirect";
-        }
-
-
-        ArrayList<HashMap<String, String>> groups = vkClient.getUserGroupsWithName(vkToken);
-
-
-        Map groupsForShow = new HashMap();
-        for (HashMap<String, String> group : groups) {
-            groupsForShow.put(group.get("gid"), group.get("name"));//Charset.forName("UTF-8").encode(group.get("name")).toString());
-        }
-        System.out.println(groupsForShow);
-
-
-        model.addAttribute("groupsnamessubmit", new Groups());
-        model.addAttribute("groupnames", groupsForShow);
-        return "form";*/
         model.addAttribute("link", host + "/");
         return "redirect";
     }
@@ -128,26 +117,30 @@ public class Vk2YaDiskImporter {
             model.addAttribute("link", host + "/");
             return "redirect";
         }
+        YaDiskImport yaImport = new YaDiskImport(diskUser, yaToken);
         HashMap<String, String> groupsIndex = vkClient.getUserGroupsWithNameHashMap(vkToken);
+        ArrayList<HashMap<String, String>> groupsOutput = new ArrayList<>();
         for (Object o : groups.getGroups()) {
             String inString = (String)o;
-            YaDiskImport yaImport = new YaDiskImport(diskUser, yaToken);
-            yaImport.UploadFilesToYaDisk(vkClient.getAllDocsInUserGroup(vkToken,inString),
-                    appDirectory, groupsIndex.get(inString), tmpDir, 6);
+            int count = yaImport.UploadFilesToYaDisk(vkClient.getAllDocsInUserGroup(vkToken,inString),
+                    appDirectory, groupsIndex.get(inString), tmpDir, fileLimitForOneGroup);
+            if(count>0)
+            groupsOutput.add(
+                    new HashMap<String,String>(){{
+                        put("name", groupsIndex.get(inString)); put("count", Integer.valueOf(count).toString());
+                    }});
         }
-        /*for(HashMap<String,String> group : groups.getGroups())
-        {
 
 
-        }*/
+        model.addAttribute("groupnames", groupsOutput);
 
-        model.addAttribute("message", groups.getGroups());
-        return "hello";
+        return "result";
     }
 
 
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
-    public String printWelcome(ModelMap model, @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
+    public String printWelcome(ModelMap model,
+                               @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
                                @CookieValue(value = "ya_token", defaultValue = "") String yaToken) throws IOException {
         if (yaToken.equals("") || vkToken.equals("")) {
             model.addAttribute("link", host + "/cookies");

@@ -101,7 +101,7 @@ public class VkClient {
                 sBuffer.append(readLine);
             }
             System.out.println(sBuffer.toString());
-            Thread.sleep(350);
+            Thread.sleep(320);
             return sBuffer.toString();
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,6 +126,14 @@ public class VkClient {
 
     public ArrayList<HashMap<String, String>> getUserGroupsWithName(String token) {
         return VkResponseParser.getUserGroupsWithName(callMethod(token, "getGroupsFull", new ArrayList<Pair<String, String>>()));
+    }
+    public ArrayList<HashMap<String, String>> getUserGroupsWithNameAndDocsCounts(String token) {
+        ArrayList<HashMap<String, String>> result = VkResponseParser.getUserGroupsWithName(callMethod(token, "getGroupsFull", new ArrayList<Pair<String, String>>()));
+        for (HashMap<String, String> re : result) {
+            re.put("docs", Integer.valueOf(this.getAllAttachedDocsToGroup(token, re.get("gid")).size()).toString());
+            re.put("walldocs", Integer.valueOf(this.getWallDocsOfGroup(token, re.get("gid")).size()).toString());
+        }
+        return result;
     }
     public HashMap<String, String> getUserGroupsWithNameHashMap(String token) {
         HashMap<String, String> outMap=new HashMap<>();
@@ -179,7 +187,7 @@ public class VkClient {
         ArrayList<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
         params.add(new Pair<String, String>("owner_id", "-" + groupId));
         params.add(new Pair<String, String>("offset", "0"));
-        params.add(new Pair<String, String>("count", "15"));
+        params.add(new Pair<String, String>("count", "30"));
 
         return VkResponseParser.getWallDocsOfGroup(callMethod(token, "wall.get", params));
     }
