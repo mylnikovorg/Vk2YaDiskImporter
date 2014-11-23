@@ -26,7 +26,7 @@ public class YaDiskUploadTread implements Callable<String> {
     }
 
     @Override
-    public synchronized String call() throws Exception {
+    public String call() throws Exception {
         ProgressListener pl = new ProgressListener() {
             @Override
             public void updateProgress(long loaded, long total) {

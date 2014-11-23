@@ -48,6 +48,7 @@ public class Vk2YaDiskController {
     private VkClient vkClient;
 
     private final int fileLimitForOneGroup=20;
+    private final int groupLimitForOneUser=20;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String Index(ModelMap model, @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
@@ -56,38 +57,22 @@ public class Vk2YaDiskController {
             model.addAttribute("link", host + "/cookies");
             return "redirect";
         }
-        ArrayList<HashMap<String, String>> groups = vkClient.getUserGroupsWithNameAndDocsCounts(vkToken);
-
-
         Map groupsForShow = new HashMap();
-        for (HashMap<String, String> group : groups) {
+
+        for (HashMap<String, String> group : vkClient.getUserGroupsWithNameAndDocsCounts(vkToken, groupLimitForOneUser)) {
             if(Integer.parseInt(group.get("docs"))+Integer.parseInt(group.get("walldocs"))>0)
                 groupsForShow.put(group.get("gid"),
                         group.get("name")+" ["+group.get("docs")+"] ["+group.get("walldocs")+"]");//Charset.forName("UTF-8").encode(group.get("name")).toString());
         }
-        /*for (HashMap<String, String> group : groups) {
 
-                groupsForShow.put(group.get("gid"), group.get("name"));//Charset.forName("UTF-8").encode(group.get("name")).toString());
-        }
-        System.out.println(groupsForShow);*/
 
 
         model.addAttribute("groupsnamessubmit", new Groups());
         model.addAttribute("groupnames", groupsForShow);
 
         return "main";
-        /*ArrayList<HashMap<String, String>> groups = vkClient.getUserGroupsWithName(vkToken);
-        System.out.println(groups);
-        for(HashMap<String,String> group : groups)
-        {
 
-            YaDiskImport yaImport = new YaDiskImport(diskUser, yaToken);
-            yaImport.UploadFilesToYaDisk(vkClient.getAllDocsInUserGroup(vkToken,group.get("gid")),
-                    appDirectory, group.get("name"), tmpDir, 6);
-        }
-*/
-        /*model.addAttribute("message", "smth");
-        return "hello";*/
+
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
@@ -117,7 +102,10 @@ public class Vk2YaDiskController {
         YaDiskImport yaImport = new YaDiskImport(diskUser, yaToken);
         HashMap<String, String> groupsIndex = vkClient.getUserGroupsWithNameHashMap(vkToken);
         ArrayList<HashMap<String, String>> groupsOutput = new ArrayList<>();
+        int groupCount=0;
         for (Object o : groups.getGroups()) {
+            if(groupCount++>groupLimitForOneUser)
+                break;
             String inString = (String)o;
             int count = yaImport.UploadFilesToYaDisk(vkClient.getAllDocsInUserGroup(vkToken,inString),
                     appDirectory, groupsIndex.get(inString), tmpDir, fileLimitForOneGroup);

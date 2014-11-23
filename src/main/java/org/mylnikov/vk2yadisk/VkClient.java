@@ -101,7 +101,7 @@ public class VkClient {
                 sBuffer.append(readLine);
             }
             System.out.println(sBuffer.toString());
-            Thread.sleep(320);
+            Thread.sleep(200);
             return sBuffer.toString();
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,13 +127,29 @@ public class VkClient {
     public ArrayList<HashMap<String, String>> getUserGroupsWithName(String token) {
         return VkResponseParser.getUserGroupsWithName(callMethod(token, "getGroupsFull", new ArrayList<Pair<String, String>>()));
     }
-    public ArrayList<HashMap<String, String>> getUserGroupsWithNameAndDocsCounts(String token) {
+    public ArrayList<HashMap<String, String>> getUserGroupsWithNameAndDocsCounts(String token, int limit) {
         ArrayList<HashMap<String, String>> result = VkResponseParser.getUserGroupsWithName(callMethod(token, "getGroupsFull", new ArrayList<Pair<String, String>>()));
+        int counter=0;
         for (HashMap<String, String> re : result) {
+            if(limit != 0 && counter++ > limit+1)
+                break;
             re.put("docs", Integer.valueOf(this.getAllAttachedDocsToGroup(token, re.get("gid")).size()).toString());
             re.put("walldocs", Integer.valueOf(this.getWallDocsOfGroup(token, re.get("gid")).size()).toString());
         }
-        return result;
+        if (limit==0)
+            return result;
+        else
+        {
+            ArrayList<HashMap<String, String>> result1 = new ArrayList<>();
+            int count = 0;
+            for (HashMap<String, String> stringStringHashMap : result) {
+                if(count++>limit)
+                    break;
+                result1.add(stringStringHashMap);
+            }
+            return result1;
+        }
+
     }
     public HashMap<String, String> getUserGroupsWithNameHashMap(String token) {
         HashMap<String, String> outMap=new HashMap<>();
