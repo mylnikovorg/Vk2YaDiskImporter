@@ -1,11 +1,11 @@
 package org.mylnikov.vk2yadisk;
 
+import org.mylnikov.vk2yadisk.utils.Groups;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,12 +13,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 public class Vk2YaDiskController {
@@ -50,7 +47,7 @@ public class Vk2YaDiskController {
     @Autowired
     private VkClient vkClient;
 
-    private final int fileLimitForOneGroup=6;
+    private final int fileLimitForOneGroup=20;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String Index(ModelMap model, @CookieValue(value = "vk_token", defaultValue = "") String vkToken,
@@ -176,10 +173,7 @@ public class Vk2YaDiskController {
 
             return new ModelAndView("redirect:" + redirectYandex);
         }
-        /*Cookie cookie = new Cookie("vk_token", vkToken);
-        response.addCookie(cookie);
-        cookie = new Cookie("ya_token", yaToken);
-        response.addCookie(cookie);*/
+
 
         System.out.println(vkToken + " <-> " + yaToken);
 

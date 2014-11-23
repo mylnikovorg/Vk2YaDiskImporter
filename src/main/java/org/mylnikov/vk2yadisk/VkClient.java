@@ -139,7 +139,8 @@ public class VkClient {
         HashMap<String, String> outMap=new HashMap<>();
         ArrayList<HashMap<String, String>> result = VkResponseParser.getUserGroupsWithName(callMethod(token, "getGroupsFull", new ArrayList<Pair<String, String>>()));
         for (HashMap<String, String> stringStringHashMap : result) {
-            outMap.put(stringStringHashMap.get("gid"), stringStringHashMap.get("name"));
+            outMap.put(stringStringHashMap.get("gid"), stringStringHashMap.get("name").replaceAll("\\/"," ")
+            );
         }
         return outMap;
     }

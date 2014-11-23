@@ -1,4 +1,4 @@
-package org.mylnikov.vk2yadisk;
+package org.mylnikov.vk2yadisk.utils;
 
 import java.util.List;
 

@@ -6,10 +6,10 @@ import sdk.src.com.yandex.disk.client.ProgressListener;
 import sdk.src.com.yandex.disk.client.TransportClient;
 
 import java.io.File;
-import java.util.AbstractList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 /**
  * Created by root on 10/12/14.
@@ -64,21 +64,39 @@ public class YaDiskImport {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            int i = 0;
+            ExecutorService executor = Executors.newFixedThreadPool(10);
+            ArrayList<FutureTask<String>> mass = new ArrayList<>();
+            Credentials sessionCred = new Credentials(user, token);
             for (HashMap<String, String> one : files) {
-                if (i >= fileAmountLimit )
+
+                if (fileCount >= fileAmountLimit )
                     break;
                 if(Integer.parseInt(one.get("size")) <= sizeLimit) {
-                    this.uploadFileToYaDisk(one, directoryYaDisk + "/" + directoryAction + "/", tmpDir);
+                    YaDiskUploadTread tread = new YaDiskUploadTread(one, directoryYaDisk + "/" + directoryAction + "/", tmpDir, sessionCred);
+                    FutureTask<String> task = new FutureTask<String>(tread);
+                    mass.add(task);
+                    executor.execute(task);
                     fileCount++;
                 }
-                i++;
+            }
+            while(true)
+            {
+                int out=0;
+                for (FutureTask<String> mas : mass) {
+                    if (!mas.isDone()) {
+                        out = 1;
+                        continue;
+                    }
+                }
+                if (out==0)
+                    break;
             }
         }
         return fileCount;
 
     }
 
+    @Deprecated
     private void uploadFileToYaDisk(HashMap<String, String> file,
                                     String directoryOnYaDisk,
                                     String tmpDirectory) {
